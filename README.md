@@ -1,70 +1,37 @@
-# Getting Started with Create React App
+# Bem-vindo ao Bigu!
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+O Bigu é um aplicativo inovador de caronas entre conhecidos, destinado a transformar a maneira como organizamos caronas. Com o foco em otimizar rotas para garantir viagens mais eficientes e agradáveis, o Bigu é a solução perfeita para quem busca economia, praticidade e sustentabilidade em seus deslocamentos diários.
 
-## Available Scripts
+## Tecnologia
 
-In the project directory, you can run:
+Desenvolvido com React, uma das mais populares bibliotecas JavaScript, o Bigu oferece uma experiência rica e responsiva. A escolha do React nos permite garantir uma aplicação de alta performance, proporcionando uma experiência de usuário fluida e intuitiva em dispositivos móveis.
 
-### `npm start`
+Utilizamos algoritmos de otimização de rota para parear você com a sua melhor carona.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Funcionalidades Principais
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- **Cálculo de Rotas Otimizadas:** O Bigu utiliza um algoritmo avançado para calcular a melhor rota, considerando diversos fatores como distância, tráfego e o número de passageiros.
+- **Interface Amigável:** A interface do Bigu, desenvolvida com React, é projetada para ser simples e intuitiva, facilitando tanto a oferta quanto a procura por caronas dentro de uma rede de contatos confiáveis.
+- **Segurança e Confiabilidade:** Com funcionalidades dedicadas à segurança, como verificação de perfis e sistema de avaliações, o Bigu assegura uma experiência de carona segura e agradável.
+- **Contribuição para a Sustentabilidade:** Utilizar o Bigu não apenas ajuda a economizar, mas também contribui para a diminuição do tráfego e da poluição, reforçando o compromisso com um futuro mais sustentável.
 
-### `npm test`
+## Como Instalar (Quick Start)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+O Bigu está em desenvolvimento! Não temos uma release formal no momento.
 
-### `npm run build`
+1. Clone o repositório direto do nosso github: https://github.com/davileahy/biguCaronas
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+(agora no seu terminal)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+2. `npm install`
+3. `npm start`
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Como Usar
 
-### `npm run eject`
+1. **Planejamento da Viagem:** Informe os detalhes da sua viagem, incluindo origem, destino e horário.
+2. **Encontre ou Ofereça Caronas:** Com base nas informações fornecidas, o Bigu encontra a melhor rota e conecta você com outros usuários com planos similares.
+3. **Viagem Segura e Agradável:** Com todas as precauções de segurança e a eficiência do algoritmo de rotas, resta apenas desfrutar da viagem.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Contribua com o Projeto
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Seu feedback e contribuições são valiosos para nós! Se tiver sugestões, encontrou algum bug ou deseja ajudar a melhorar o Bigu, sinta-se à vontade para abrir uma issue ou enviar um pull request através do nosso repositório GitHub.
