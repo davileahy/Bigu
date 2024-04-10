@@ -7,7 +7,6 @@ function Main() {
             <div className='title-text'>
                 <h1>Bigu</h1>
             </div>
-
             <LocationForm />
         </div>
     );

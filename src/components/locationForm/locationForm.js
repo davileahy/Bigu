@@ -2,11 +2,24 @@ import React, { useState } from 'react';
 import { Button, Input } from 'antd';
 import styles from './locationForm.module.css'
 
+// Definição estática de pessoas em pontos diferentes.
+
+const pessoas = [
+    { nome: "Pessoa 1: Praia de Pajuçara", latitude: -9.665833, longitude: -35.735278 },
+    { nome: "Pessoa 2: Praia de Ponta Verde", latitude: -9.670278, longitude: -35.713056 },
+    { nome: "Pessoa 3: Praia de Jatiúca", latitude: -9.649722, longitude: -35.708056 },
+    { nome: "Pessoa 4: Parque Municipal de Maceió", latitude: -9.638889, longitude: -35.714722 },
+    { nome: "Pessoa 5: Museu Théo Brandão", latitude: -9.664722, longitude: -35.735556 }
+  ];  
+
+// Função para puxar os pontos de partida e destino do usuário
+
 function LocationForm() {
     const [pontoPartida, setPontoPartida] = useState('');
     const [pontoChegada, setPontoChegada] = useState('');
     const [resultadoPartida, setResultadoPartida] = useState(null);
     const [resultadoChegada, setResultadoChegada] = useState(null);
+    const [pontoMaisProximo, setPontoMaisProximo] = useState(null);
     const [rota, setRota] = useState(null);
 
     const API_KEY = process.env.NOMINATIM_API_KEY;
@@ -28,40 +41,51 @@ function LocationForm() {
         }
     };
 
-    const calcularRota = async () => {
-        if (!resultadoPartida || !resultadoChegada) {
-            alert('Por favor, busque os dois endereços primeiro.');
+    // Algoritmo para calcular distância baseado na formula de Harversine
+
+    function calcularDistancia(lat1, lon1, lat2, lon2) {
+        const R = 6371; // Raio da Terra em km
+        const dLat = (lat2 - lat1) * Math.PI / 180; // Diferença em radianos
+        const dLon = (lon2 - lon1) * Math.PI / 180;
+        
+        const a = 
+          Math.sin(dLat/2) * Math.sin(dLat/2) +
+          Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+          Math.sin(dLon/2) * Math.sin(dLon/2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+        const distancia = R * c; // Distância em km
+        return distancia;
+      }
+
+      // Encontra a menor distância entre pontos.
+
+      const encontrarPontoMaisProximo = () => {
+        if (!resultadoPartida) {
+            alert('Por favor, busque o endereço de partida primeiro.');
             return;
         }
 
-        const body = {
-            coordinates: [
-                [parseFloat(resultadoPartida.lon), parseFloat(resultadoPartida.lat)],
-                [parseFloat(resultadoChegada.lon), parseFloat(resultadoChegada.lat)]
-            ]
-        };
+        let menorDistancia = Infinity;
+        let pontoMaisProximo = null;
 
-        const options = {
-            method: 'POST',
-            headers: {
-                'Authorization': API_KEY,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(body)
-        };
+        pessoas.forEach(ponto => {
+            const distancia = calcularDistancia(
+                resultadoPartida.lat, resultadoPartida.lon,
+                ponto.latitude, ponto.longitude
+            );
 
-        try {
-            const response = await fetch('https://api.openrouteservice.org/v2/directions/driving-car', options);
-            const data = await response.json();
-            setRota(data);
-        } catch (error) {
-            console.error('Erro ao calcular a rota:', error);
-            alert('Erro ao calcular a rota');
-        }
+            if (distancia < menorDistancia) {
+                menorDistancia = distancia;
+                pontoMaisProximo = ponto;
+            }
+        });
+
+        setPontoMaisProximo(pontoMaisProximo);
     };
 
     return (
         <div className={styles.body}>
+            {/*UI para Ponto de partida e destino*/}
             <div>
                 <Input 
                     type="text"
@@ -95,14 +119,18 @@ function LocationForm() {
                         <p>Chegada - Longitude: {resultadoChegada.lon}</p>
                     </div>
                 )}
+            
             </div>
-            <Button onClick={calcularRota}>Calcular Rota</Button>
-            {rota && (
-                <div>
-                    <p>Distância: {rota.features[0].properties.summary.distance} metros</p>
-                    <p>Tempo estimado: {Math.round(rota.features[0].properties.summary.duration / 60)} minutos</p>
-                </div>
-            )}
+
+            <div>
+                <Button onClick={encontrarPontoMaisProximo}>Encontrar Pessoa Mais Próxima</Button>
+                {pontoMaisProximo && (
+                    <div>
+                        <p>Pessoa Mais Próxima: {pontoMaisProximo.nome}</p>
+                        <p>Distância: {calcularDistancia(resultadoPartida.lat, resultadoPartida.lon, pontoMaisProximo.latitude, pontoMaisProximo.longitude).toFixed(2)} km</p>
+                    </div>
+                )}
+            </div>
         </div>
     );
 }
