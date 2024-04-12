@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Input } from 'antd';
 import styles from './locationForm.module.css'
+import ShowMap from '../showMap/showMap';
 
 // Definição estática de pessoas em pontos diferentes.
 
@@ -99,6 +100,7 @@ function LocationForm() {
                     <div>
                         <p>Partida - Latitude: {resultadoPartida.lat}</p>
                         <p>Partida - Longitude: {resultadoPartida.lon}</p>
+                        <ShowMap latitude={resultadoPartida.lat} longitude={resultadoPartida.lon}></ShowMap>
                     </div>
                 )}
                 
