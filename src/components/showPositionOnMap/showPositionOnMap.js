@@ -1,7 +1,9 @@
 import React from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
 
-const ShowMap = ({ latitude, longitude }) => {
+
+const ShowPositionOnMap = ({ latitude, longitude }) => {
   const position = [latitude, longitude];
 
   return (
@@ -20,4 +22,4 @@ const ShowMap = ({ latitude, longitude }) => {
   );
 };
 
-export default ShowMap;
+export default ShowPositionOnMap;

@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
-import { Button, Input } from 'antd';
+import { Button, Input, Layout, Card, message } from 'antd';
+import { SearchOutlined } from '@ant-design/icons';
 import styles from './locationForm.module.css'
-import ShowMap from '../showMap/showMap';
+import ShowPositionOnMap from '../showPositionOnMap/showPositionOnMap';
+
+const { Header, Content } = Layout;
 
 // Definição estática de pessoas em pontos diferentes.
 
@@ -14,6 +17,8 @@ const pessoas = [
   ];  
 
 // Função para puxar os pontos de partida e destino do usuário
+
+const { Search } = Input;
 
 function LocationForm() {
     const [pontoPartida, setPontoPartida] = useState('');
@@ -85,55 +90,39 @@ function LocationForm() {
     };
 
     return (
-        <div className={styles.body}>
-            {/*UI para Ponto de partida e destino*/}
-            <div>
-                <Input 
-                    type="text"
+        <Layout className={styles.container}>
+        <Content>
+            <Card className={styles.card} title="Ponto de Partida">
+                <Input.Search
+                    className={styles.searchInput}
                     value={pontoPartida}
                     onChange={e => setPontoPartida(e.target.value)}
+                    onSearch={() => buscarLocalizacao(pontoPartida, setResultadoPartida)}
+                    enterButton={<Button className={styles.button} icon={<SearchOutlined />} />}
                     placeholder="Ponto de Partida"
                 />
-                <br></br> 
-                <Button onClick={() => buscarLocalizacao(pontoPartida, setResultadoPartida)}>Buscar Partida</Button>
                 {resultadoPartida && (
-                    <div>
-                        <p>Partida - Latitude: {resultadoPartida.lat}</p>
-                        <p>Partida - Longitude: {resultadoPartida.lon}</p>
-                        <ShowMap latitude={resultadoPartida.lat} longitude={resultadoPartida.lon}></ShowMap>
-                    </div>
+                    <ShowPositionOnMap className={styles.showMap} latitude={resultadoPartida.lat} longitude={resultadoPartida.lon} />
                 )}
-                
-            </div>
-            <br></br>
-            <div>
-                <Input
-                    type="text"
+            </Card>
+            <Card className={styles.card} title="Ponto de Chegada">
+                <Input.Search
+                    className={styles.searchInput}
                     value={pontoChegada}
                     onChange={e => setPontoChegada(e.target.value)}
-                    placeholder="Ponto de Chegada"
+                    onSearch={() => buscarLocalizacao(pontoChegada, setResultadoChegada)}
+                    enterButton="Buscar Chegada"
                 />
-                <br></br>
-                <Button onClick={() => buscarLocalizacao(pontoChegada, setResultadoChegada)}>Buscar Chegada</Button>
-                {resultadoChegada && (
-                    <div>
-                        <p>Chegada - Latitude: {resultadoChegada.lat}</p>
-                        <p>Chegada - Longitude: {resultadoChegada.lon}</p>
-                    </div>
-                )}
-            
-            </div>
-
-            <div>
-                <Button onClick={encontrarPontoMaisProximo}>Encontrar Pessoa Mais Próxima</Button>
-                {pontoMaisProximo && (
-                    <div>
-                        <p>Pessoa Mais Próxima: {pontoMaisProximo.nome}</p>
-                        <p>Distância: {calcularDistancia(resultadoPartida.lat, resultadoPartida.lon, pontoMaisProximo.latitude, pontoMaisProximo.longitude).toFixed(2)} km</p>
-                    </div>
-                )}
-            </div>
-        </div>
+            </Card>
+            <Button className={styles.button} onClick={encontrarPontoMaisProximo}>Encontrar Pessoa Mais Próxima</Button>
+            {pontoMaisProximo && (
+                <Card className={styles.card}>
+                    <p>Pessoa Mais Próxima: {pontoMaisProximo.nome}</p>
+                    <p>Distância: {calcularDistancia(resultadoPartida.lat, resultadoPartida.lon, pontoMaisProximo.latitude, pontoMaisProximo.longitude).toFixed(2)} km</p>
+                </Card>
+            )}
+        </Content>
+    </Layout>
     );
 }
 

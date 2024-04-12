@@ -1,5 +1,6 @@
 import React from 'react';
 import LocationForm from '../../components/locationForm/locationForm';
+import 'leaflet/dist/leaflet.css';
 
 function Main() {
     return (
