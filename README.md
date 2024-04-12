@@ -35,3 +35,9 @@ O Bigu está em desenvolvimento! Não temos uma release formal no momento.
 ## Contribua com o Projeto
 
 Seu feedback e contribuições são valiosos para nós! Se tiver sugestões, encontrou algum bug ou deseja ajudar a melhorar o Bigu, sinta-se à vontade para abrir uma issue ou enviar um pull request através do nosso repositório GitHub.
+
+## Colaboradores
+
+- [@davileahy](https://github.com/davileahy)
+- [@filipemalgueiro](https://github.com/filipemalgueiro)
+- [@21vito](https://github.com/21vito)
