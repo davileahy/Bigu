@@ -3,6 +3,7 @@ import { Button, Input, Layout, Card, message } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import styles from './locationForm.module.css'
 import ShowPositionOnMap from '../showPositionOnMap/showPositionOnMap';
+import DisplayPositionsAndPath from '../dispayPositionsAndPath/displayPositionsAndPath';
 
 const { Header, Content } = Layout;
 
@@ -116,10 +117,25 @@ function LocationForm() {
             </Card>
             <Button className={styles.button} onClick={encontrarPontoMaisProximo}>Encontrar Pessoa Mais Próxima</Button>
             {pontoMaisProximo && (
-                <Card className={styles.card}>
-                    <p>Pessoa Mais Próxima: {pontoMaisProximo.nome}</p>
-                    <p>Distância: {calcularDistancia(resultadoPartida.lat, resultadoPartida.lon, pontoMaisProximo.latitude, pontoMaisProximo.longitude).toFixed(2)} km</p>
-                </Card>
+                <div>
+                    <Card className={styles.card}>
+                        <p>Pessoa Mais Próxima: {pontoMaisProximo.nome}</p>
+                        <p>Distância: {calcularDistancia(resultadoPartida.lat, resultadoPartida.lon, pontoMaisProximo.latitude, pontoMaisProximo.longitude).toFixed(2)} km</p>
+                    </Card>
+                    <DisplayPositionsAndPath
+                        personOne={{
+                            latitude: resultadoPartida.lat,
+                            longitude: resultadoPartida.lon,
+                            name: 'Ponto de Partida'
+                        }}
+                        personTwo={{
+                            latitude: pontoMaisProximo.latitude,
+                            longitude: pontoMaisProximo.longitude,
+                            name: pontoMaisProximo.nome
+                        }}
+                    />
+
+                </div>
             )}
         </Content>
     </Layout>
