@@ -41,3 +41,4 @@ Seu feedback e contribuições são valiosos para nós! Se tiver sugestões, enc
 - [@davileahy](https://github.com/davileahy)
 - [@filipemalgueiro](https://github.com/filipemalgueiro)
 - [@21vito](https://github.com/21vito)
+- [@juliopsoliveira](https://github.com/juliopsoliveira)
