@@ -1,3 +1,6 @@
+//este componente serve para exibir as rotas entre as coordenadas apresentadas
+
+//imports
 import React from 'react';
 import { MapContainer, TileLayer, Marker, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -5,6 +8,7 @@ import L from 'leaflet';
 import 'leaflet-routing-machine';
 import 'leaflet-routing-machine/dist/leaflet-routing-machine.css';
 
+//função da rota recebendo as entradas de começo(start), fim(end) e ...(pointB)
 const ShowRoute = ({ start, end, pointB }) => {
     const Routing = () => {
         const map = useMap();
@@ -36,6 +40,7 @@ const ShowRoute = ({ start, end, pointB }) => {
         return null;
     };
 
+    //exibição do mapa na tela
     return (
         <MapContainer center={[start.latitude, start.longitude]} zoom={13} style={{ height: 400, width: '100%' }}>
             <TileLayer
