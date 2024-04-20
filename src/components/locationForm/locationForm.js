@@ -1,9 +1,11 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { Button, Input, Layout, Card, message, Spin } from 'antd';
+import React, { useState } from 'react';
+import { Layout, Card, Button, Input, message, Spin } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import styles from './locationForm.module.css';
 import ShowPositionOnMap from '../showPositionOnMap/showPositionOnMap';
 import ShowRoute from '../showRoute/showRoute';
+import { useHaversine } from '../../hooks/useHaversine/useHaversine';
+import { useLocationSearch } from '../../hooks/useLocationSearch/useLocationSearch';
 
 const { Content } = Layout;
 
@@ -15,64 +17,35 @@ const pessoas = [
     { nome: "Pessoa 5", partida: { latitude: -9.664722, longitude: -35.735556 }, chegada: { latitude: -9.654722, longitude: -35.745556 } }
 ];
 
-function LocationForm() {
+const LocationForm = () => {
+    const { searchLocation, loading } = useLocationSearch();
+    const { calculateDistance } = useHaversine();
     const [pontoPartida, setPontoPartida] = useState('');
     const [pontoChegada, setPontoChegada] = useState('');
     const [resultadoPartida, setResultadoPartida] = useState(null);
     const [resultadoChegada, setResultadoChegada] = useState(null);
     const [pessoaMaisProxima, setPessoaMaisProxima] = useState(null);
-    const [loading, setLoading] = useState(false);
 
-    const buscarLocalizacao = async (endereco, setResultado) => {
-        setLoading(true);
-        const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(endereco)}`;
-        try {
-            const response = await fetch(url);
-            const data = await response.json();
-            if (data.length > 0 && data[0].lat && data[0].lon) {
-                setResultado({
-                    latitude: parseFloat(data[0].lat),
-                    longitude: parseFloat(data[0].lon)
-                });
-                message.success('Endereço encontrado');
-            } else {
-                setResultado(null);
-                message.error('Endereço não encontrado');
-            }
-        } catch (error) {
-            console.error("Erro ao buscar localização:", error);
-            message.error('Erro ao buscar localização');
-        }
-        setLoading(false);
+    const handleSearch = async (ponto, setResultado) => {
+        const resultado = await searchLocation(ponto);
+        setResultado(resultado);
     };
 
-    const encontrarPessoaMaisProxima = useCallback(() => {
-        let menorDistancia = Infinity;
-        let pessoaProxima = null;
-    
-        pessoas.forEach(pessoa => {
-            const distanciaPartida = calcularDistancia(resultadoPartida.latitude, resultadoPartida.longitude, pessoa.partida.latitude, pessoa.partida.longitude);
-            const distanciaChegada = calcularDistancia(resultadoChegada.latitude, resultadoChegada.longitude, pessoa.chegada.latitude, pessoa.chegada.longitude);
-            const distanciaTotal = distanciaPartida + distanciaChegada;
-    
-            if (distanciaTotal < menorDistancia) {
-                menorDistancia = distanciaTotal;
-                pessoaProxima = pessoa;
+    const encontrarPessoaMaisProxima = () => {
+        if (!resultadoPartida) {
+            message.error('Defina primeiro o ponto de partida!');
+            return;
+        }
+        let minDist = Infinity;
+        let closestPerson = null;
+        pessoas.forEach(p => {
+            const dist = calculateDistance(resultadoPartida.latitude, resultadoPartida.longitude, p.partida.latitude, p.partida.longitude);
+            if (dist < minDist) {
+                minDist = dist;
+                closestPerson = p;
             }
         });
-    
-        setPessoaMaisProxima(pessoaProxima);
-    }, [resultadoPartida, resultadoChegada]); // Dependências da função
-
-    const calcularDistancia = (lat1, lon1, lat2, lon2) => {
-        const R = 6371;
-        const dLat = (lat2 - lat1) * Math.PI / 180;
-        const dLon = (lon2 - lon1) * Math.PI / 180;
-        const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                  Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-                  Math.sin(dLon / 2) * Math.sin(dLon / 2);
-        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        return R * c;
+        setPessoaMaisProxima(closestPerson);
     };
 
     return (
@@ -83,13 +56,12 @@ function LocationForm() {
                         className={styles.searchInput}
                         value={pontoPartida}
                         onChange={e => setPontoPartida(e.target.value)}
-                        onSearch={() => buscarLocalizacao(pontoPartida, setResultadoPartida)}
-                        enterButton={<Button className={styles.button} icon={<SearchOutlined />} />}
+                        onSearch={() => handleSearch(pontoPartida, setResultadoPartida)}
+                        enterButton={<Button icon={<SearchOutlined />} loading={loading}>Buscar</Button>}
                         placeholder="Ponto de Partida"
-                        loading={loading}
                     />
                     {resultadoPartida && (
-                        <ShowPositionOnMap className={styles.showMap} latitude={resultadoPartida.latitude} longitude={resultadoPartida.longitude} />
+                        <ShowPositionOnMap latitude={resultadoPartida.latitude} longitude={resultadoPartida.longitude} />
                     )}
                 </Card>
                 <Card className={styles.card} title="Ponto de Chegada">
@@ -97,36 +69,27 @@ function LocationForm() {
                         className={styles.searchInput}
                         value={pontoChegada}
                         onChange={e => setPontoChegada(e.target.value)}
-                        onSearch={() => buscarLocalizacao(pontoChegada, setResultadoChegada)}
+                        onSearch={() => handleSearch(pontoChegada, setResultadoChegada)}
+                        enterButton={<Button icon={<SearchOutlined />} loading={loading}>Buscar</Button>}
                         placeholder='Ponto de Chegada'
-                        enterButton={<Button className={styles.button} icon={<SearchOutlined />} />}
-                        loading={loading}
                     />
                     {resultadoChegada && (
-                        <ShowPositionOnMap className={styles.showMap} latitude={resultadoChegada.latitude} longitude={resultadoChegada.longitude} />
+                        <ShowPositionOnMap latitude={resultadoChegada.latitude} longitude={resultadoChegada.longitude} />
                     )}
                 </Card>
+                <Button type="primary" onClick={encontrarPessoaMaisProxima} loading={loading}>
+                    Encontrar Pessoa Mais Próxima
+                </Button>
                 {pessoaMaisProxima && (
-                    <Card className={styles.card}>
-                        <p>Pessoa Mais Proxima: {pessoaMaisProxima.nome}</p>
-                        <p>Distância Partida: {calcularDistancia(resultadoPartida.latitude, resultadoPartida.longitude, pessoaMaisProxima.partida.latitude, pessoaMaisProxima.partida.longitude).toFixed(2)} km</p>
-                        <p>Distância Chegada: {calcularDistancia(resultadoChegada.latitude, resultadoChegada.longitude, pessoaMaisProxima.chegada.latitude, pessoaMaisProxima.chegada.longitude).toFixed(2)} km</p>
-                        <p>Distância Total: {(calcularDistancia(resultadoPartida.latitude, resultadoPartida.longitude, pessoaMaisProxima.partida.latitude, pessoaMaisProxima.partida.longitude) + calcularDistancia(resultadoChegada.latitude, resultadoChegada.longitude, pessoaMaisProxima.chegada.latitude, pessoaMaisProxima.chegada.longitude)).toFixed(2)} km</p>
-                    </Card>
-                )}
-                
-                {resultadoPartida && pessoaMaisProxima && resultadoChegada && (
-                    <Card className={styles.card}>
-                        <ShowRoute
-                            pointA={resultadoPartida}
-                            pointB={resultadoChegada}
-                            personClosest={pessoaMaisProxima.partida}  // Ajuste conforme o necessário
-                        />
+                    <Card title="Pessoa Mais Próxima">
+                        <p>{pessoaMaisProxima.nome}</p>
+                        <p>Distância: {calculateDistance(resultadoPartida.latitude, resultadoPartida.longitude, pessoaMaisProxima.partida.latitude, pessoaMaisProxima.partida.longitude).toFixed(2)} km</p>
+                        <ShowRoute start={resultadoPartida} end={resultadoChegada} pointB={pessoaMaisProxima.partida} />
                     </Card>
                 )}
             </Content>
         </Layout>
     );
-}
+};
 
 export default LocationForm;
