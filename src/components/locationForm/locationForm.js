@@ -55,30 +55,35 @@ const LocationForm = () => {
     };
 
     return (
-        <div className={layoutStyle}>
-            <Card className="m-4 shadow-lg" title="Ponto de Partida">
-                <Input.Search
-                    className="rounded-md"
-                    value={pontoPartida}
-                    onChange={e => setPontoPartida(e.target.value)}
-                    onSearch={() => handleSearch(pontoPartida, setResultadoPartida)}
-                    enterButton={<Button icon={<SearchOutlined />} loading={loading}>Buscar</Button>}
-                    placeholder="Ponto de Partida"
-                />
-                {resultadoPartida && <ShowPositionOnMap latitude={resultadoPartida.latitude} longitude={resultadoPartida.longitude} />}
-            </Card>
+        <div className='main-form'>
+            
+            <div>
+                <Card className="m-4 shadow-lg" title="Ponto de Partida">
+                    <Input.Search
+                        className="rounded-md"
+                        value={pontoPartida}
+                        onChange={e => setPontoPartida(e.target.value)}
+                        onSearch={() => handleSearch(pontoPartida, setResultadoPartida)}
+                        enterButton={<Button icon={<SearchOutlined />} loading={loading}>Buscar</Button>}
+                        placeholder="Ponto de Partida"
+                    />
+                    {resultadoPartida && <ShowPositionOnMap latitude={resultadoPartida.latitude} longitude={resultadoPartida.longitude} />}
+                </Card>
+            </div>
 
-            <Card className="m-4 shadow-lg" title="Ponto de Chegada">
-                <Input.Search
-                    className="rounded-md"
-                    value={pontoChegada}
-                    onChange={e => setPontoChegada(e.target.value)}
-                    onSearch={() => handleSearch(pontoChegada, setResultadoChegada)}
-                    enterButton={<Button icon={<SearchOutlined />} loading={loading}>Buscar</Button>}
-                    placeholder='Ponto de Chegada'
-                />
-                {resultadoChegada && <ShowPositionOnMap latitude={resultadoChegada.latitude} longitude={resultadoChegada.longitude} />}
-            </Card>
+            <div>
+                <Card className="m-4 shadow-lg" title="Ponto de Chegada">
+                    <Input.Search
+                        className="rounded-md"
+                        value={pontoChegada}
+                        onChange={e => setPontoChegada(e.target.value)}
+                        onSearch={() => handleSearch(pontoChegada, setResultadoChegada)}
+                        enterButton={<Button icon={<SearchOutlined />} loading={loading}>Buscar</Button>}
+                        placeholder='Ponto de Chegada'
+                    />
+                    {resultadoChegada && <ShowPositionOnMap latitude={resultadoChegada.latitude} longitude={resultadoChegada.longitude} />}
+                </Card>
+            </div>
 
             <div className='flex items-center justify-center'>
                 <Button type="primary" onClick={encontrarPessoaMaisProxima} loading={loading} className="mx-4 my-2 text-center">
