@@ -84,17 +84,21 @@ const LocationForm = () => {
                 <Button type="primary" onClick={encontrarPessoaMaisProxima} loading={loading} className="mx-4 my-2 text-center">
                     Pegar um Bigu <EnvironmentOutlined />
                 </Button>
+
             </div>
 
             {pessoaMaisProxima && (
                 <Card className="m-4 shadow-lg" title="Pessoa Mais Próxima">
+              
                     <p>{pessoaMaisProxima.nome} está saindo de: {pessoaMaisProxima.localpartida}</p>
                     <p> Com destino à: {pessoaMaisProxima.localchegada}</p>
                     <h1>Distância entre você e o motorista: {calculateDistance(resultadoPartida.latitude, resultadoPartida.longitude, pessoaMaisProxima.partida.latitude, pessoaMaisProxima.partida.longitude).toFixed(2)} km</h1>
+
                     <ShowRoute start={resultadoPartida} end={resultadoChegada} pointB={pessoaMaisProxima.partida} />
                 </Card>
             )}
         </div>
+
     );
 };
 
