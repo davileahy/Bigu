@@ -1,14 +1,10 @@
-//imports básicos react e afins
 import React, { useState } from 'react';
-import { Layout, Card, Button, Input, message, Spin } from 'antd';
-import { SearchOutlined } from '@ant-design/icons';
-import styles from './locationForm.module.css';
+import { Card, Button, Input, message } from 'antd';
+import { SearchOutlined, EnvironmentOutlined } from '@ant-design/icons';
 import ShowPositionOnMap from '../showPositionOnMap/showPositionOnMap';
 import ShowRoute from '../showRoute/showRoute';
 import { useHaversine } from '../../hooks/useHaversine/useHaversine';
 import { useLocationSearch } from '../../hooks/useLocationSearch/useLocationSearch';
-
-const { Content } = Layout;
 
 //determinando as coordenadas predeterminadas
 const pessoas = [
@@ -19,7 +15,9 @@ const pessoas = [
     { nome: "Pessoa 5", partida: { latitude: -9.664722, longitude: -35.735556 }, chegada: { latitude: -9.654722, longitude: -35.745556 } }
 ];
 
-//função que atrbui coordenadas e procura sua localização
+// Aplicando o efeito de fundo blur e transparente usando Tailwind
+const layoutStyle = "relative bg-white/30 backdrop-blur-sm p-4";
+
 const LocationForm = () => {
     const { searchLocation, loading } = useLocationSearch();
     const { calculateDistance } = useHaversine();
@@ -29,12 +27,13 @@ const LocationForm = () => {
     const [resultadoChegada, setResultadoChegada] = useState(null);
     const [pessoaMaisProxima, setPessoaMaisProxima] = useState(null);
 
+    // Função para buscar a localização com base no ponto
     const handleSearch = async (ponto, setResultado) => {
         const resultado = await searchLocation(ponto);
         setResultado(resultado);
     };
 
-    //função que procura a melhor opção para ser escolhida
+    // Função para encontrar a pessoa mais próxima baseada nas coordenadas de partida
     const encontrarPessoaMaisProxima = () => {
         if (!resultadoPartida) {
             message.error('Defina primeiro o ponto de partida!');
@@ -45,8 +44,6 @@ const LocationForm = () => {
         let closestPerson = null;
         pessoas.forEach(p => {
             const dist = calculateDistance(resultadoPartida.latitude, resultadoPartida.longitude, p.partida.latitude, p.partida.longitude);
-
-            //se a distancia foi menor doq a distancia minima determinada ele será escolhido como possivel melhor opção
             if (dist < minDist) {
                 minDist = dist;
                 closestPerson = p;
@@ -56,60 +53,45 @@ const LocationForm = () => {
     };
 
     return (
-        <Layout className={styles.container}>
+        <div className={layoutStyle}>
+            <Card className="m-4 shadow-lg" title="Ponto de Partida">
+                <Input.Search
+                    className="rounded-md"
+                    value={pontoPartida}
+                    onChange={e => setPontoPartida(e.target.value)}
+                    onSearch={() => handleSearch(pontoPartida, setResultadoPartida)}
+                    enterButton={<Button icon={<SearchOutlined />} loading={loading}>Buscar</Button>}
+                    placeholder="Ponto de Partida"
+                />
+                {resultadoPartida && <ShowPositionOnMap latitude={resultadoPartida.latitude} longitude={resultadoPartida.longitude} />}
+            </Card>
 
-            <Content>
+            <Card className="m-4 shadow-lg" title="Ponto de Chegada">
+                <Input.Search
+                    className="rounded-md"
+                    value={pontoChegada}
+                    onChange={e => setPontoChegada(e.target.value)}
+                    onSearch={() => handleSearch(pontoChegada, setResultadoChegada)}
+                    enterButton={<Button icon={<SearchOutlined />} loading={loading}>Buscar</Button>}
+                    placeholder='Ponto de Chegada'
+                />
+                {resultadoChegada && <ShowPositionOnMap latitude={resultadoChegada.latitude} longitude={resultadoChegada.longitude} />}
+            </Card>
 
-                <Card className={styles.card} title="Ponto de Partida">
-
-                    <Input.Search
-                        //botões e input da primeira coordenada (atual)
-                        className={styles.searchInput}
-                        value={pontoPartida}
-                        onChange={e => setPontoPartida(e.target.value)}
-                        onSearch={() => handleSearch(pontoPartida, setResultadoPartida)}
-                        enterButton={<Button icon={<SearchOutlined />} loading={loading}>Buscar</Button>}
-                        placeholder="Ponto de Partida"
-                    />
-                    {resultadoPartida && (
-                        <ShowPositionOnMap latitude={resultadoPartida.latitude} longitude={resultadoPartida.longitude} />
-                    )}
-
-                </Card>
-
-                <Card className={styles.card} title="Ponto de Chegada">
-
-                    <Input.Search
-                        //botões e input da segunda coordenada (chegada)
-                        className={styles.searchInput}
-                        value={pontoChegada}
-                        onChange={e => setPontoChegada(e.target.value)}
-                        onSearch={() => handleSearch(pontoChegada, setResultadoChegada)}
-                        enterButton={<Button icon={<SearchOutlined />} loading={loading}>Buscar</Button>}
-                        placeholder='Ponto de Chegada'
-                    />
-                    {resultadoChegada && (
-                        <ShowPositionOnMap latitude={resultadoChegada.latitude} longitude={resultadoChegada.longitude} />
-                    )}
-
-                </Card>
-
-                {/*botão que chama a função de matchmaking 'encontrarPessoaMaisProxima'*/}
-                <Button type="primary" onClick={encontrarPessoaMaisProxima} loading={loading}>
-                    Encontrar Pessoa Mais Próxima
+            <div className='flex items-center justify-center'>
+                <Button type="primary" onClick={encontrarPessoaMaisProxima} loading={loading} className="mx-4 my-2 text-center">
+                    Pegar um Bigu <EnvironmentOutlined />
                 </Button>
+            </div>
 
-                {pessoaMaisProxima && (
-                    //Card contendo a localização da melhor opção
-                    <Card title="Pessoa Mais Próxima">
-                        <p>{pessoaMaisProxima.nome}</p>
-                        <p>Distância: {calculateDistance(resultadoPartida.latitude, resultadoPartida.longitude, pessoaMaisProxima.partida.latitude, pessoaMaisProxima.partida.longitude).toFixed(2)} km</p>
-                        <ShowRoute start={resultadoPartida} end={resultadoChegada} pointB={pessoaMaisProxima.partida} />
-                    </Card>
-
-                )}
-            </Content>
-        </Layout>
+            {pessoaMaisProxima && (
+                <Card className="m-4 shadow-lg" title="Pessoa Mais Próxima">
+                    <p>{pessoaMaisProxima.nome}</p>
+                    <p>Distância: {calculateDistance(resultadoPartida.latitude, resultadoPartida.longitude, pessoaMaisProxima.partida.latitude, pessoaMaisProxima.partida.longitude).toFixed(2)} km</p>
+                    <ShowRoute start={resultadoPartida} end={resultadoChegada} pointB={pessoaMaisProxima.partida} />
+                </Card>
+            )}
+        </div>
     );
 };
 
