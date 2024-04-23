@@ -80,3 +80,12 @@
 .ant-card-head {
     background: var(--primary-color);
 }
+
+.finalmsg p{
+    font-size: 25px;
+    font-weight: bold;
+    display: flex;  
+    align-items: center;
+    justify-content: center;
+    margin: 20px;
+}

@@ -12,11 +12,15 @@ const { Content } = Layout;
 
 //determinando as coordenadas predeterminadas
 const pessoas = [
-    { nome: "Pessoa 1", partida: { latitude: -9.665833, longitude: -35.735278 }, chegada: { latitude: -9.655833, longitude: -35.745278 } },
-    { nome: "Pessoa 2", partida: { latitude: -9.670278, longitude: -35.713056 }, chegada: { latitude: -9.660278, longitude: -35.723056 } },
-    { nome: "Pessoa 3", partida: { latitude: -9.649722, longitude: -35.708056 }, chegada: { latitude: -9.639722, longitude: -35.718056 } },
-    { nome: "Pessoa 4", partida: { latitude: -9.638889, longitude: -35.714722 }, chegada: { latitude: -9.628889, longitude: -35.724722 } },
-    { nome: "Pessoa 5", partida: { latitude: -9.664722, longitude: -35.735556 }, chegada: { latitude: -9.654722, longitude: -35.745556 } }
+
+    { nome: "Victor", partida: { latitude: -9.65962113904759, longitude: -35.70531047541993 }, chegada: { latitude: -9.633566323869907, longitude: -35.70367813599484 }, localpartida: 'Avenida Professor Vital Barbosa', localchegada: 'Centro Universitário de Maceió' },
+
+    { nome: "Davi", partida: { latitude: -9.648579319751494, longitude: -35.71563004185323 }, chegada: { latitude: -9.661136137013715, longitude: -35.69728034897884 }, localpartida: 'Maceio Shopping', localchegada: 'Maceio Mar Hotel' },
+     
+    { nome: "Filipe", partida: { latitude: -9.651828436798906, longitude: -35.73339479802717 }, chegada: { latitude: -9.65156469032868, longitude:-35.70695752702342 }, localpartida: 'Praça Do Centenário', localchegada: 'The Square Office' },
+     
+    { nome: "Julio", partida: { latitude: -9.512648592636323, longitude: -35.79724039245005}, chegada: { latitude: -9.617692640300307, longitude: -35.6897613196884}, localpartida: 'Aeroporto Internacional Zumbi dos Palmares', localchegada: 'Jacarecica do sul'}
+
 ];
 
 //função que atrbui coordenadas e procura sua localização
@@ -99,15 +103,24 @@ const LocationForm = () => {
                     Encontrar Pessoa Mais Próxima
                 </Button>
 
+                <div className={styles.finalmsg}>
+
                 {pessoaMaisProxima && (
+
                     //Card contendo a localização da melhor opção
                     <Card title="Pessoa Mais Próxima">
-                        <p>{pessoaMaisProxima.nome}</p>
-                        <p>Distância: {calculateDistance(resultadoPartida.latitude, resultadoPartida.longitude, pessoaMaisProxima.partida.latitude, pessoaMaisProxima.partida.longitude).toFixed(2)} km</p>
+
+                        <p>{pessoaMaisProxima.nome} está saindo de: {pessoaMaisProxima.localpartida}</p>
+                        <p> Com destino à: {pessoaMaisProxima.localchegada}</p>
+
+                        <h1>Distância entre você e o motorista: {calculateDistance(resultadoPartida.latitude, resultadoPartida.longitude, pessoaMaisProxima.partida.latitude, pessoaMaisProxima.partida.longitude).toFixed(2)} km</h1>
+
                         <ShowRoute start={resultadoPartida} end={resultadoChegada} pointB={pessoaMaisProxima.partida} />
                     </Card>
-
                 )}
+
+                </div>
+
             </Content>
         </Layout>
     );
