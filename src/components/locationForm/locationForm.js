@@ -52,6 +52,7 @@ const LocationForm = () => {
             }
         });
         setPessoaMaisProxima(closestPerson);
+
     };
 
     return (
