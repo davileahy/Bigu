@@ -26,6 +26,8 @@ O Bigu está em desenvolvimento! Não temos uma release formal no momento.
 2. `npm install`
 3. `npm start`
 
+Agora o aplicativo ja deve ter instalado todos os pacotes necessários e está pronto para rodar!
+
 ## Como Usar
 
 1. **Planejamento da Viagem:** Informe os detalhes da sua viagem, incluindo origem, destino e horário.
