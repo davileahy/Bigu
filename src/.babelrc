@@ -1,0 +1,12 @@
+{
+    "presets": [
+        ["@babel/preset-env", {"targets": {"node": "current"}}], // Compiles JavaScript for the version of Node that you are running
+        "@babel/preset-react" // Transforms JSX into JavaScript
+    ],
+    "plugins": [
+      "@babel/plugin-proposal-class-properties",
+      "@babel/plugin-proposal-private-methods",
+      "@babel/plugin-syntax-dynamic-import"
+    ]
+  }
+  
