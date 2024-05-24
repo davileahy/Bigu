@@ -4,7 +4,7 @@ O Bigu é um aplicativo inovador de caronas entre conhecidos, destinado a transf
 
 ## Tecnologia
 
-Desenvolvido com React, uma das mais populares bibliotecas JavaScript, o Bigu oferece uma experiência rica e responsiva. A escolha do React nos permite garantir uma aplicação de alta performance, proporcionando uma experiência de usuário fluida e intuitiva em dispositivos móveis.
+Desenvolvido com REACTJS, uma das mais populares bibliotecas JavaScript, o Bigu oferece uma experiência rica e responsiva. A escolha do React nos permite garantir uma aplicação de alta performance, proporcionando uma experiência de usuário fluida e intuitiva em dispositivos móveis.
 
 Utilizamos algoritmos de otimização de rota para parear você com a sua melhor carona.
 
@@ -26,12 +26,21 @@ O Bigu está em desenvolvimento! Não temos uma release formal no momento.
 2. `npm install`
 3. `npm start`
 
+Agora o aplicativo ja deve ter instalado todos os pacotes necessários e está pronto para rodar!
+
 ## Como Usar
 
 1. **Planejamento da Viagem:** Informe os detalhes da sua viagem, incluindo origem, destino e horário.
-2. **Encontre ou Ofereça Caronas:** Com base nas informações fornecidas, o Bigu encontra a melhor rota e conecta você com outros usuários com planos similares.
+2. **Encontre ou Ofereça Caronas:** Com base nas informações fornecidas, o Bigu encontra a melhor rota e conecta você com outros usuários com planos similares, exibindo um mapa interativo com as rotas que melhor configuram-se ao seu uso.
 3. **Viagem Segura e Agradável:** Com todas as precauções de segurança e a eficiência do algoritmo de rotas, resta apenas desfrutar da viagem.
 
 ## Contribua com o Projeto
 
 Seu feedback e contribuições são valiosos para nós! Se tiver sugestões, encontrou algum bug ou deseja ajudar a melhorar o Bigu, sinta-se à vontade para abrir uma issue ou enviar um pull request através do nosso repositório GitHub.
+
+## Colaboradores
+
+- [@davileahy](https://github.com/davileahy)
+- [@filipemalgueiro](https://github.com/filipemalgueiro)
+- [@21vito](https://github.com/21vito)
+- [@juliopsoliveira](https://github.com/juliopsoliveira)
