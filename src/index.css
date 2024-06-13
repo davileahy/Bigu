@@ -1,37 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
-  background: rgb(255,255,255);
-  background: linear-gradient(90deg, rgb(83, 83, 83) 0%, rgb(0, 54, 97) 10%, rgba(0,98,173,1) 80%);
-  color: whitesmoke;
+  --primary-color: #0054C1; /* Azul mais escuro */
+  --secondary-color: #0062AD; /* Azul */
+  --font-stack: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
 }
 
-:root h1{
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: var(--font-stack);
+  background: var(--gradient-bg);
+  color: var(--text-color);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 0;
+  font-weight: normal;
   text-align: center;
 }
 
-body {
-    margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
-    'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
-    'Noto Color Emoji';
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
-  
-  code {
-    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-      monospace;
-  }
+body, input, button {
+  font-family: var(--font-stack);
+}
 
-  main {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .title-text {
-    color: rgb(0, 54, 97);
-    background-color: whitesmoke;
-    border-radius: 10px;
-    width: fit-content;
-    padding: 2px;
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
